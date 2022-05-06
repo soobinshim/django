@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block con %}
+    <div class="container mt-5 mb-5">
+        <h1><b>번역기</b></h1>
+
+        <form method="post" name="transForm">
+            {% csrf_token %}
+            <div class="row mt-5">
+                <div class="col-lg-5">
+                    <textarea name="bf" class="form-control" placeholder="번역할 텍스트를 입력하세요" style="height: 300px; font-size: 30px; font-weight: bold;">{{ bf }}</textarea>
+                </div>
+                <div class="col-lg-2 text-center">
+                    <select name="fr" class="form-select" size="5" aria-label="size 3 select example">
+                        {% for code, name in nd.items %}
+                            <option value="{{code}}" {% if fr %} {% if fr == code %} selected {% endif %} {% else %} {% if code == 'ko' %} selected {% endif %} {% endif %}>{{name|upper}}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="button" onclick="trans()" class="btn btn-dark mt-3 mb-3">TRANS</button>
+                    <select name="to" class="form-select" size="5" aria-label="size 3 select example">
+                        {% for code, name in nd.items %}
+                            <option value="{{code}}" {% if to %} {% if to == code %} selected {% endif %} {% else %} {% if code == 'en' %} selected {% endif %} {% endif %}>{{name|upper}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-lg-5">
+                    <textarea class="form-control" disabled style="height: 300px; font-size: 30px; font-weight: bold;">{{ af }}</textarea>
+                </div>
+            </div>
+        </form>
+
+
+    </div>
+
+
+    <script>
+        function trans(){
+            t = document.transForm;
+            if(!t.bf.value){
+                alert("번역할 내용을 입력하세요");
+            }else if(t.fr.value == t.to.value){
+                alert("언어가 동일합니다");
+            }else{
+                t.submin();
+            }
+        }
+    </script>
+
+
+{% endblock %}
